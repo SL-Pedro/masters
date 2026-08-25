@@ -22,6 +22,7 @@ The data used in this project comes from:
 
 - Eurostat
 - OECD / OCDE
+- ARDECO - SOVGDP
 
 These sources were used to collect regional, economic, and patent-related indicators relevant to GDP forecasting.
 
