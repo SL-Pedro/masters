@@ -67,6 +67,30 @@ The datasets are not necessarily included in this repository.
 
 Users should obtain the original data from Eurostat and OECD / OCDE, respecting the access rules and usage conditions of each data provider.
 
+
+
+## Post-Submission Update (August 2026)
+
+[#post-submission-update](#post-submission-update)
+
+After submitting the thesis, a bug was identified in the NUTS 2013→2021
+harmonization step of `NUTS5.0.R`: the classification version was selected
+as the single most frequent version *per year, pooled across all countries*,
+rather than per country-year. Because Germany and France dominate patent
+application volume, this caused most other countries' regions to be dropped
+before the version-conversion step, restricting the patent-augmented sample
+to 9 countries / 88 NUTS 2 regions instead of full EU coverage.
+
+- `NUTS5.0.R` and `Patents1.3.ipynb` are preserved unchanged and correspond
+  exactly to the results reported in the thesis PDF
+  (tag: `v1.0-thesis-submission`).
+- `NUTS5.1_corrected.R` and `Patents1.4.ipynb` contain the fix and produce
+  a corrected patent panel covering ~25 EU countries / ~207 NUTS 2 regions.
+- Re-running the analysis on the corrected sample confirms the thesis's
+  qualitative conclusions (patent indicators still improve nonlinear models,
+  not Linear Regression), though the magnitude of the patent-related gains
+  is smaller than originally reported.
+
 ## Pedro Luís
 
 Created as part of a master’s project.
