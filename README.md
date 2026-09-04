@@ -1,20 +1,20 @@
 # GDP Forecasting Project
 
-This repository contains the R code and related materials used for a master’s project on GDP forecasting.
+This repository contains the R and Python code used for a master's project on GDP forecasting.
 
 ## Project Overview
 
 The objective of this project is to compare the predictive performance of traditional linear models and data-driven machine learning models in GDP forecasting.
 
-The study also investigates whether patent-related indicators can improve GDP forecasts and to what extent they should be considered useful forecasting variables.
+The study also investigates whether patent-related indicators can improve GDP forecasts, to what extent they should be considered useful forecasting variables, and whether that value changes across forecasting horizons.
 
 ## Research Questions
 
-This study is driven by two main research questions:
+This study is driven by three main questions:
 
 1. **How do linear models compare with data-driven models in predictive performance?**
-
 2. **To what extent can patent-related indicators be used to forecast GDP?**
+3. **Does the forecasting horizon (1 year vs. 2 years) affect the predictive value of patent indicators?**
 
 ## Data Sources
 
@@ -23,74 +23,46 @@ The data used in this project comes from:
 - Eurostat
 - OECD / OCDE
 - ARDECO - SOVGDP
+- EPO (patent counts, NUTS2 level)
 
 These sources were used to collect regional, economic, and patent-related indicators relevant to GDP forecasting.
 
 ## NUTS Version Conversion
 
-Part of the R code was used to convert regional data from **NUTS 2013** to **NUTS 2021**.
-
-This conversion was necessary to harmonize regional classifications across datasets and ensure consistency across different data sources and time periods.
+Part of the R code (`NUTS5_1_corrected.R`) harmonizes regional classifications across multiple NUTS versions — **2010, 2013, and 2016** — into **NUTS 2021**, ensuring consistency across datasets and time periods. The classification version is resolved **per country-year**, producing a patent-augmented panel covering **25 EU countries / 207 NUTS 2 regions** (209 regions in the full replication panel, before merging with patent data).
 
 ## Methodology
 
-The project compares the forecasting performance of:
+The project builds non-overlapping panels at two forecasting horizons — **1 year** and **2 years** — where the dependent variable is the cumulative log-growth of GDP per capita from anchor year T to T+Δ, and regressors are measured at T.
 
-- Autoregressive models
-- Linear regression models
-- Data-driven machine learning models
+For each horizon, it compares:
 
-Patent-related indicators were included in some model specifications to test whether they improved GDP forecasting accuracy.
+- Autoregressive baseline
+- Linear regression (including a fixed-effects / within-transformation specification)
+- Random Forest
+- Gradient Boosting
+
+Patent indicators are tested in two forms — raw patent count and log-transformed lagged patent count — and added to each model to measure predictive gains. SHAP analysis is used to inspect feature importance across the Linear Regression, Random Forest, and Gradient Boosting specifications, and regional forecast maps are produced for a future anchor year.
 
 ## Main Findings
 
-The main findings of the project were:
-
-- Linear models, including autoregressive models and linear regression models, showed better predictive performance than the data-driven machine learning models used in this study.
-- Patent-related indicators enhanced prediction in some settings.
-- However, patents did not replace traditional macroeconomic fundamentals as the main determinants of forecast accuracy.
-- Overall, patents should be interpreted as supplementary forecasting variables rather than primary predictors of GDP.
+- Linear models (autoregressive and linear regression with fixed effects) had lower forecast error than Random Forest and Gradient Boosting at both horizons — e.g., at Δ=2, Linear FE RMSE was 2.67 vs. 3.27 (RF) and 3.25 (GB).
+- Patent indicators improved the nonlinear models (Random Forest, Gradient Boosting) at both horizons, with the largest gain for Random Forest at the 1-year horizon.
+- Patent indicators gave little to no improvement for Linear Regression at either horizon.
+- Patents did not replace traditional macroeconomic fundamentals as the main determinants of forecast accuracy — they act as supplementary variables, mainly useful to the nonlinear models.
 
 ## Repository Contents
 
-This repository may include:
+This repository includes:
 
-- R scripts for data preparation and analysis
-- Code for converting NUTS 2013 regions to NUTS 2021
-- GDP forecasting models
-- Model accuracy comparisons
-- Documentation explaining the data and methodology
+- `README.md`
+- `NUTS5_1_corrected.R` — NUTS 2010/2013/2016 → 2021 harmonization script
+- `Patents1.4.ipynb` — panel construction, 1-year and 2-year horizon models, patent indicator tests, SHAP analysis, and regional forecast maps
 
 ## Notes on Data Availability
 
-The datasets are not necessarily included in this repository.
-
-Users should obtain the original data from Eurostat and OECD / OCDE, respecting the access rules and usage conditions of each data provider.
-
-
-
-## Post-Submission Update (August 2026)
-
-[#post-submission-update](#post-submission-update)
-
-After submitting the thesis, a bug was identified in the NUTS 2013→2021
-harmonization step of `NUTS5.0.R`: the classification version was selected
-as the single most frequent version *per year, pooled across all countries*,
-rather than per country-year. Because Germany and France dominate patent
-application volume, this caused most other countries' regions to be dropped
-before the version-conversion step, restricting the patent-augmented sample
-to 9 countries / 88 NUTS 2 regions instead of full EU coverage.
-
-- `NUTS5.0.R` and `Patents1.3.ipynb` are preserved unchanged and correspond
-  exactly to the results reported in the thesis PDF
-  (tag: `v1.0-thesis-submission`).
-- `NUTS5.1_corrected.R` and `Patents1.4.ipynb` contain the fix and produce
-  a corrected patent panel covering ~25 EU countries / ~207 NUTS 2 regions.
-- Re-running the analysis on the corrected sample confirms the thesis's
-  qualitative conclusions (patent indicators still improve nonlinear models,
-  not Linear Regression), though the magnitude of the patent-related gains
-  is smaller than originally reported.
+The datasets are not necessarily included in this repository. Users should obtain the original data from Eurostat, OECD / OCDE, and EPO, respecting the access rules and usage conditions of each data provider.
 
 ## Pedro Luís
 
-Created as part of a master’s project.
+Created as part of a master's project.
