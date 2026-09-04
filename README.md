@@ -14,7 +14,6 @@ This study is driven by three main questions:
 
 1. **How do linear models compare with data-driven models in predictive performance?**
 2. **To what extent can patent-related indicators be used to forecast GDP?**
-3. **Does the forecasting horizon (1 year vs. 2 years) affect the predictive value of patent indicators?**
 
 ## Data Sources
 
