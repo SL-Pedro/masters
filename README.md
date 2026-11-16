@@ -10,7 +10,7 @@ The study also investigates whether patent-related indicators can improve GDP fo
 
 ## Research Questions
 
-This study is driven by three main questions:
+This study is driven by two main questions:
 
 1. **How do linear models compare with data-driven models in predictive performance?**
 2. **To what extent can patent-related indicators be used to forecast GDP?**
